@@ -43,6 +43,7 @@
     <Compile Include="AuthorDao.cs" />
     <Compile Include="BaseDao.cs" />
     <Compile Include="BookDao.cs" />
+    <Compile Include="BookInfoDao.cs" />
     <Compile Include="BookLanguageDao.cs" />
     <Compile Include="GenreDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

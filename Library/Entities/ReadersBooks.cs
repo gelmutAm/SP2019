@@ -13,10 +13,10 @@ namespace Entities
 
         }
 
-        public ReadersBooks(int idBook, int idReader)
+        public ReadersBooks(int idReader, int idBook)
         {
-            this.IDReader = idBook;
-            this.IDBook = idReader;
+            this.IDReader = idReader;
+            this.IDBook = idBook;
         }
 
         public ReadersBooks(List<object> fieldsValuesList)

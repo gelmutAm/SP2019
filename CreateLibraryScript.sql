@@ -35,7 +35,9 @@ create table Book(
 create table Reader(
 	id_reader int identity(1,1) not null constraint PK_Reader primary key,
 	full_name nvarchar(100) not null,
-	age int not null
+	age int not null,
+	log_in nvarchar(100) not null,
+	pass_word nvarchar(100) not null,
 )
 
 create table ReadersBooks(
@@ -49,8 +51,7 @@ alter table Book with check add constraint FK_Book_Genre foreign key(id_genre) r
 alter table Book with check add constraint FK_Book_Language foreign key(id_language) references BookLanguage(id_language)
 alter table Book with check add constraint FK_Book_PublishingHouse foreign key(id_publishing_house) references PublishingHouse(id_publishing_house)
 alter table ReadersBooks with check add constraint FK_ReadersBooks_Reader foreign key(id_reader) references Reader(id_reader)
-alter table ReadersBooks with check add constraint FK_ReadersBooks_Book foreign key(id_book) references Book(id_book)
-
+alter table ReadersBooks with check add constraint FK_ReadersBooks_Book foreign key(id_book) references Book(id_book)	   
 
 INSERT INTO Author([name]) VALUES('Xavier Sharp'),('Bernard Houston'),('Daphne Vasquez'),('Gareth Joyner'),('Thaddeus Serrano'),('Chase Kerr'),('Shelley Blackburn'),('Herrod Gill'),('Latifah Rodriquez'),('Halla Holder');
 INSERT INTO Author([name]) VALUES('Amy Sims'),('Alma Flowers'),('Colt Lloyd'),('Phyllis West'),('Ryan Patrick'),('Paula Weeks'),('Alan Wilkerson'),('Silas Rios'),('Fredericka Ruiz'),('India Weber');
@@ -107,16 +108,16 @@ INSERT INTO Book([title],[id_author],[id_genre],[id_language],[id_publishing_hou
 INSERT INTO Book([title],[id_author],[id_genre],[id_language],[id_publishing_house]) VALUES('hendrerit',32,47,40,61),('Suspendisse',18,17,40,42),('et',52,51,79,13),('justo',6,22,17,14),('et,',45,56,14,89),('vitae',83,89,44,97),('dictum.',9,19,63,54),('eros',12,51,92,34),('Duis',97,33,100,60),('at',12,57,96,24);
 INSERT INTO Book([title],[id_author],[id_genre],[id_language],[id_publishing_house]) VALUES('sit',24,28,37,73),('vel,',1,57,77,97),('nisl',76,91,71,52),('vulputate',35,69,83,3),('posuere',65,53,56,60),('molestie',50,64,10,65),('sed',56,19,86,63),('mi',55,18,79,29),('tortor.',89,36,44,43),('Nullam',7,69,39,19);
 
-INSERT INTO Reader([full_name],[age]) VALUES('Barbara Morales',30),('Rajah Montgomery',71),('Ulla Davenport',30),('Cherokee Castillo',89),('Cullen Mack',66),('Kimberly Kirby',7),('Taylor Atkinson',1),('Ivan Nicholson',7),('Lester Poole',52),('Melyssa Terry',97);
-INSERT INTO Reader([full_name],[age]) VALUES('Emma Estes',86),('Edan Rodriquez',56),('Germane Dudley',76),('Dai Hayden',33),('Maxwell Mccormick',19),('Risa Everett',6),('Bruce Blackwell',13),('Carl Cook',79),('Tatiana Gill',3),('Imelda Blackwell',70);
-INSERT INTO Reader([full_name],[age]) VALUES('Deirdre Snow',76),('Orli Patterson',45),('Carter Sweet',16),('Shelby Ellis',22),('Judith Mayer',94),('Iris Rasmussen',16),('Breanna Mathis',60),('Bevis Morales',18),('Mona Hale',24),('Seth Hart',100);
-INSERT INTO Reader([full_name],[age]) VALUES('Hoyt Solomon',62),('Ina Ward',33),('Jayme Berger',16),('Kenneth Huber',42),('Ivy Mays',61),('Ryan Collins',2),('Madonna Holland',59),('Sigourney Sargent',18),('Naida Valencia',8),('Chantale Fuentes',12);
-INSERT INTO Reader([full_name],[age]) VALUES('Tamekah Mccarthy',24),('Rahim William',44),('Haley Schwartz',17),('Sigourney Lawson',95),('Sean Savage',57),('Graham Reeves',6),('Octavia Burnett',49),('Beatrice Hopper',27),('Dustin Clark',26),('Lara Stuart',12);
-INSERT INTO Reader([full_name],[age]) VALUES('Brenna Puckett',99),('Perry Long',38),('Ebony Singleton',38),('Laurel Berg',8),('Halee Dunn',46),('Seth Hunter',89),('Nita Knapp',30),('Laith Hunt',31),('Raven Haney',52),('Stewart Hawkins',40);
-INSERT INTO Reader([full_name],[age]) VALUES('Gareth Hardy',82),('Brenda Levine',33),('Leo Alston',87),('India Cote',92),('Kimberley Moon',37),('Barrett Chen',98),('Delilah Barry',53),('Charissa Cummings',62),('Tad Copeland',48),('Tasha Knapp',62);
-INSERT INTO Reader([full_name],[age]) VALUES('Brett Vega',64),('Astra Gilmore',53),('Bernard Irwin',80),('Elton Palmer',5),('Tanek Flores',80),('Beau Kemp',2),('Patience Hatfield',7),('Sacha Patton',51),('Brianna Caldwell',88),('Julie Oliver',77);
-INSERT INTO Reader([full_name],[age]) VALUES('Dominique Mcmahon',42),('Lawrence Chaney',73),('Jeremy Witt',67),('Rhoda Carrillo',32),('George Cobb',40),('Lesley David',90),('Dieter Norris',94),('Sara Poole',37),('Thomas Mcclain',90),('Mira Justice',29);
-INSERT INTO Reader([full_name],[age]) VALUES('Celeste Meyer',80),('Ahmed Riggs',68),('Akeem Franks',9),('Hyatt Parker',12),('Brendan Gonzales',98),('Tasha Atkins',51),('Wynne Craft',14),('Demetria Dalton',31),('Unity Head',19),('Drake Todd',46);
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Cody Head',69,'congue,','Cras'),('Anika Lara',27,'in','nec'),('Amanda Hinton',80,'Pellentesque','facilisis,'),('Griffith Gaines',44,'dictum','cursus'),('Macy Carrillo',100,'erat','Praesent'),('Isaiah Bonner',43,'Sed','commodo'),('Alden Rios',13,'metus.','ullamcorper,'),('Jordan Stephens',55,'ipsum','sit'),('Lucian Wise',51,'Quisque','nec'),('Marah Reese',75,'tincidunt','bibendum');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Nolan Franks',64,'posuere','imperdiet'),('Yeo Bullock',20,'vulputate,','sit'),('Serina Nieves',39,'arcu','lorem,'),('Thane Buckner',16,'Aliquam','facilisis'),('Blaine Haney',54,'urna','parturient'),('Dylan Potter',9,'ante','ac'),('Piper Phelps',55,'sem','orci.'),('Graiden Pena',5,'eleifend.','cursus'),('Serena Ortiz',100,'aliquet,','tincidunt'),('Amir Henderson',96,'sodales','nisi');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Reuben Montgomery',76,'et','amet,'),('Amanda Dodson',52,'in','Suspendisse'),('Logan Lambert',51,'vel','Nulla'),('Ingrid Mcdaniel',3,'dictum.','eleifend'),('Herman Acosta',8,'dignissim','pede'),('Flynn Hess',3,'lobortis,','vestibulum'),('Georgia Erickson',17,'Mauris','velit.'),('Hunter Sosa',5,'sit','lectus'),('Zahir Vance',73,'magna','accumsan'),('Audra Armstrong',41,'sagittis','Lorem');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Arsenio Fitzgerald',53,'Pellentesque','risus.'),('Dana Wilkinson',65,'porttitor','libero.'),('Amity Walter',40,'condimentum.','arcu.'),('Yvette Deleon',52,'tincidunt','amet'),('Uta Woods',6,'ipsum.','id'),('Jonas Barrera',77,'turpis','nascetur'),('Lewis Calhoun',4,'pede.','varius'),('Kalia Pearson',33,'feugiat.','ac'),('Dahlia Rowe',59,'Pellentesque','Fusce'),('Lilah Christian',43,'Phasellus','felis.');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Forrest Smith',78,'lorem,','morbi'),('Castor Obrien',86,'varius','ipsum'),('Howard Everett',66,'ligula','nec'),('Shelley Keith',58,'Duis','dolor.'),('Vance Fry',91,'Nunc','ultricies'),('Brandon Decker',90,'cursus','orci.'),('Kylynn Pickett',62,'sapien.','ornare,'),('Yvonne Burgess',81,'egestas','eget,'),('Channing Barber',8,'ridiculus','Nullam'),('Otto Pope',20,'nulla','luctus');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Herrod Francis',66,'parturient','Cum'),('Willa Sanchez',57,'erat','Sed'),('Jerry George',90,'ante','Duis'),('Buckminster Reilly',52,'fringilla','aliquet'),('John Swanson',61,'lobortis.','Nullam'),('Dana Boone',12,'egestas','eget'),('Emerald Patel',20,'nunc','nulla.'),('Kirsten Hodge',54,'in,','elementum'),('Genevieve Chandler',96,'Donec','quis'),('Leila Munoz',20,'risus','ut');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Montana Oconnor',48,'ipsum.','mauris.'),('Mason Hodges',3,'Aliquam','cursus'),('Brady Murray',21,'Quisque','cursus,'),('Zia Slater',20,'Fusce','molestie'),('Seth Snider',53,'purus','sociis'),('Abdul Foley',18,'interdum','nec'),('Buckminster Mccall',26,'metus','eu'),('Hu Fry',69,'in','Nam'),('Kitra Romero',47,'aliquet','Integer'),('Rafael Rogers',80,'vitae','convallis');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Ryder Moore',77,'non,','Nam'),('Florence Parks',67,'non','a'),('Justin Gutierrez',13,'non,','Donec'),('Yuri Yates',69,'orci.','semper'),('Cameron Saunders',6,'quis','Duis'),('Fredericka Mitchell',19,'Sed','auctor,'),('Carlos Rice',9,'Integer','lorem,'),('Darius Trevino',83,'hendrerit','arcu'),('Sawyer Palmer',65,'et','ornare'),('Lee King',7,'vel','Vivamus');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Merritt Strong',61,'eu','ornare,'),('Reuben Maddox',17,'pede.','malesuada'),('Phelan Reeves',75,'Morbi','est'),('Walker Barrett',36,'eget,','ridiculus'),('Lydia Church',19,'sit','In'),('Thaddeus Wilcox',22,'non,','velit'),('Jin Potts',74,'magna','Duis'),('Honorato Banks',77,'orci','libero'),('Keefe Thompson',66,'parturient','et'),('Darius Benton',42,'risus.','Morbi');
+INSERT INTO Reader([full_name],[age],[log_in],[pass_word]) VALUES('Mallory Spence',20,'libero.','malesuada'),('Bell Aguirre',46,'aliquet','pede'),('Carolyn Barlow',39,'aliquet.','feugiat'),('Quinn Mack',82,'Fusce','libero'),('Chanda Johnson',81,'Cras','mollis.'),('Ezekiel Edwards',82,'purus','nulla.'),('Maisie Baker',72,'et','at,'),('Nicholas Whitley',47,'consequat','odio.'),('Gareth Boone',24,'metus.','Suspendisse'),('Octavius Cook',8,'lectus.','dignissim');
 
 INSERT INTO ReadersBooks([id_reader],[id_book]) VALUES(24,5),(50,84),(67,71),(3,28),(42,74),(13,35),(75,51),(5,5),(48,77),(46,83);
 INSERT INTO ReadersBooks([id_reader],[id_book]) VALUES(72,32),(91,17),(85,53),(59,44),(18,86),(24,72),(74,94),(24,68),(98,74),(52,90);
@@ -166,10 +167,12 @@ as
 go
 create procedure AddReader @ID int output,
 						   @Name nvarchar(100),
-						   @Age nvarchar(100)
+						   @Age nvarchar(100),
+						   @Login nvarchar(100),
+						   @Password nvarchar(100)
 as
-	insert into Reader (full_name, age)
-	values (@Name, @Age)
+	insert into Reader (full_name, age, log_in, pass_word)
+	values (@Name, @Age, @Login, @Password)
 	set @ID = SCOPE_IDENTITY()
 
 go

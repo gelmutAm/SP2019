@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAuthorLogic.cs" />
+    <Compile Include="IBookInfoLogic.cs" />
     <Compile Include="IBookLanguageLogic.cs" />
     <Compile Include="IBookLogic.cs" />
     <Compile Include="IGenreLogic.cs" />

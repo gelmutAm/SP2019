@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Author.cs" />
     <Compile Include="Book.cs" />
+    <Compile Include="BookInfo.cs" />
     <Compile Include="BookLanguage.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

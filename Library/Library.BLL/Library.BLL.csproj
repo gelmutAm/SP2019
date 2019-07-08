@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorLogic.cs" />
+    <Compile Include="BookInfoLogic.cs" />
     <Compile Include="BookLanguageLogic.cs" />
     <Compile Include="BookLogic.cs" />
     <Compile Include="GenreLogic.cs" />

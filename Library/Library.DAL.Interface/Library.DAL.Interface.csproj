@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IAuthorDao.cs" />
     <Compile Include="IBookDao.cs" />
+    <Compile Include="IBookInfoDao.cs" />
     <Compile Include="IBookLanguageDao.cs" />
     <Compile Include="IGenreDao.cs" />
     <Compile Include="IPublishingHouseDao.cs" />

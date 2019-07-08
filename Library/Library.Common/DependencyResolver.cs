@@ -73,5 +73,14 @@ namespace Library.Common
         private static IReaderBooksLogic _readersBooksLogic;
 
         public static IReaderBooksLogic ReadersBooksLogic => _readersBooksLogic ?? (_readersBooksLogic = new ReadersBooksLogic(ReadersBooksDao));
+
+
+        private static IBookInfoDao _bookInfoDao;
+
+        public static IBookInfoDao BookInfoDao => _bookInfoDao ?? (_bookInfoDao = new BookInfoDao());
+
+        private static IBookInfoLogic _bookInfoLogic;
+
+        public static IBookInfoLogic BookInfoLogic => _bookInfoLogic ?? (_bookInfoLogic = new BookInfoLogic(BookInfoDao));
     }
 }

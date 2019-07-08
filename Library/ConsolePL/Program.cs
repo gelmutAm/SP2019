@@ -18,7 +18,7 @@ namespace ConsolePL
 
             foreach(var item in readerBooksLogic.GetAll().ToList())
             {
-                if(item.ID == id)
+                if(item.IDReader == id)
                 {
                     result.Add(item);
                 }
@@ -27,14 +27,14 @@ namespace ConsolePL
             return result;
         }
 
-        public static void GetReaderInfo(int id, IReaderLogic readerLogic, IBookLogic bookLogic, IReaderBooksLogic readerBooksLogic)
+        public static void GetReaderInfo(int id, IReaderLogic readerLogic, IBookInfoLogic bookInfoLogic, IReaderBooksLogic readerBooksLogic)
         {
-            List<Book> books = new List<Book>();
+            List<BookInfo> books = new List<BookInfo>();
             List<ReadersBooks> readersBooks = GetConcreteReaderBooks(id, readerBooksLogic);
 
             for(int i = 0; i < readersBooks.Count; i++)
             {
-                foreach(var item in bookLogic.GetAll().ToList())
+                foreach(var item in bookInfoLogic.GetAll().ToList())
                 {
                     if(readersBooks[i].IDBook == item.ID)
                     {
@@ -53,15 +53,15 @@ namespace ConsolePL
 
             foreach(var item in books)
             {
-                Console.WriteLine($"{item.Title}");
+                Console.WriteLine($"{item.ID}. {item.Title} | {item.Author} | {item.Genre} | {item.BookLanguage} | {item.PublishingHouse}");
             }
         }
 
-        public static void GetBooksList(IBookLogic bookLogic)
+        public static void GetBooksList(IBookInfoLogic bookInfoLogic)
         {
-            foreach(var item in bookLogic.GetAll().ToList())
+            foreach(var item in bookInfoLogic.GetAll().ToList())
             {
-                Console.WriteLine($"{item.ID}. {item.Title} {item.IDAuthor} {item.IDGenre} {item.IDLanguage} {item.IDPublishingHouse}");
+                Console.WriteLine($"{item.ID}. {item.Title} | {item.Author} | {item.Genre} | {item.BookLanguage} | {item.PublishingHouse}");
             }
         }
 
@@ -86,9 +86,46 @@ namespace ConsolePL
             }
         }
 
+        public static int SignIn(string readerName, string login, string password, IReaderLogic readerLogic)
+        {
+            foreach(var item in readerLogic.GetAll().ToList())
+            {
+                if(item.Name == readerName && item.Login == login && item.Password == password)
+                {
+                    return item.ID;
+                }
+            }
+
+            return -1;
+        }
+
+        public static void AddBookToReaderList(int bookID, int readerID, IReaderBooksLogic readerBooksLogic)
+        {
+            readerBooksLogic.Add(new ReadersBooks(readerID, bookID));
+        }
+
+        public static void DeleteBookFromReaderList(int bookID, int readerID, IReaderBooksLogic readerBooksLogic)
+        {
+            int id = -1;
+
+            foreach(var item in readerBooksLogic.GetAll().ToList())
+            {
+                if(item.IDBook == bookID && item.IDReader == readerID)
+                {
+                    id = item.ID;
+                }
+            }
+
+            if (id != -1)
+            {
+                readerBooksLogic.DeleteById(id);
+            }
+        }
+
         public static void Main(string[] args)
         {
             IBookLogic bookLogic = DependencyResolver.BookLogic;
+            IBookInfoLogic bookInfoLogic = DependencyResolver.BookInfoLogic;
             IReaderLogic readerLogic = DependencyResolver.ReaderLogic;
             IReaderBooksLogic readerBooksLogic = DependencyResolver.ReadersBooksLogic;
 
@@ -99,8 +136,8 @@ namespace ConsolePL
                 Console.WriteLine();
                 Console.WriteLine("1. Получить список книг");
                 Console.WriteLine("2. Получить информацию о читателе");
-                Console.WriteLine("3. Удалить книгу");
-                Console.WriteLine("4. Добавить книгу");
+                Console.WriteLine("3. Войти в профиль");
+                Console.WriteLine("4. Зарегистрироваться");
                 Console.WriteLine("5. Поиск информации о книге по названию");
                 Console.WriteLine("6. Выход");
                 Console.WriteLine();
@@ -109,7 +146,7 @@ namespace ConsolePL
                 {
                     case "1":
                         Console.WriteLine("Получить список книг");
-                        GetBooksList(bookLogic);
+                        GetBooksList(bookInfoLogic);
                         break;
 
                     case "2":
@@ -123,38 +160,93 @@ namespace ConsolePL
                             Console.Write("Введите id читателя: ");
                         }
 
-                        GetReaderInfo(id, readerLogic, bookLogic, readerBooksLogic);
+                        GetReaderInfo(id, readerLogic, bookInfoLogic, readerBooksLogic);
                         break;
 
                     case "3":
-                        Console.WriteLine("Удалить книгу");
-                        Console.Write("Введите id книги: ");
+                        Console.WriteLine("Войти в профиль");
+                        Console.Write("Введите имя читателя: ");
+                        string readerName = Console.ReadLine();
+                        Console.Write("Введите логин: ");
+                        string login = Console.ReadLine();
+                        Console.Write("Введите пароль: ");
+                        string password = Console.ReadLine();
 
-                        while (!int.TryParse(Console.ReadLine(), out id) || id < 1)
+                        int idReader = SignIn(readerName, login, password, readerLogic);
+
+                        if (idReader != -1)
                         {
-                            Console.WriteLine("input is wrong");
-                            Console.Write("Введите id книги : ");
+                            GetReaderInfo(idReader, readerLogic, bookInfoLogic, readerBooksLogic);
+                            bool readerInputComplete = false;
+
+                            while (!readerInputComplete)
+                            {
+                                Console.WriteLine("1. Добавить книгу");
+                                Console.WriteLine("2. Удалить книгу");
+                                Console.WriteLine("3. Выйти из профиля");
+
+                                switch (Console.ReadLine())
+                                {
+                                    case "1":
+                                        Console.Write("Введите id книги: ");
+
+                                        int idBook;
+                                        while (!int.TryParse(Console.ReadLine(), out idBook) || idBook < 1)
+                                        {
+                                            Console.WriteLine("input is wrong");
+                                            Console.Write("Введите id книги: ");
+                                        }
+
+                                        AddBookToReaderList(idBook, idReader, readerBooksLogic);
+                                        break;
+
+                                    case "2":
+                                        Console.Write("Введите id книги: ");
+
+                                        while (!int.TryParse(Console.ReadLine(), out idBook) || idBook < 1)
+                                        {
+                                            Console.WriteLine("input is wrong");
+                                            Console.Write("Введите id книги: ");
+                                        }
+
+                                        DeleteBookFromReaderList(idBook, idReader, readerBooksLogic);
+                                        break;
+
+                                    case "3":
+                                        readerInputComplete = true;
+                                        break;
+
+                                    default:
+                                        Console.WriteLine("Вы ввели неправильное значение");
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Такого пользователя нет");
                         }
 
-                        DeleteBook(id, bookLogic);
                         break;
 
                     case "4":
-                        Console.WriteLine("Добавить книгу");
-                        Console.Write("Введите название: ");
-                        string title = Console.ReadLine();
-                        Console.Write("Введите id автора: ");
-                        int idAuthor = int.Parse(Console.ReadLine());
-                        Console.Write("Введите id жанра: ");
-                        int idGenre = int.Parse(Console.ReadLine());
-                        Console.Write("Введите id языка: ");
-                        int idLanguage = int.Parse(Console.ReadLine());
-                        Console.Write("Введите id издательства: ");
-                        int idph = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Регистрация");
+                        Console.Write("Введите имя: ");
+                        string name = Console.ReadLine();
+                        Console.Write("Введите возраст: ");
+                        int age;
+                        while (!int.TryParse(Console.ReadLine(), out age) || age < 1)
+                        {
+                            Console.WriteLine("input is wrong");
+                            Console.Write("Введите возраст: ");
+                        }
 
-                        Book book = new Book(title, idAuthor, idGenre, idLanguage, idph);
+                        Console.Write("Введите логин: ");
+                        string log = Console.ReadLine();
+                        Console.Write("Введите пароль: ");
+                        string pass = Console.ReadLine();
 
-                        AddBook(book, bookLogic);
+                        readerLogic.Add(new Reader(name, age, log, pass));
                         break;
 
                     case "5":
