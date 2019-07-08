@@ -11,117 +11,7 @@ using Entities;
 namespace ConsolePL
 {
     public class Program
-    {
-        public static List<ReadersBooks> GetConcreteReaderBooks(int id, IReaderBooksLogic readerBooksLogic)
-        {
-            List<ReadersBooks> result = new List<ReadersBooks>();
-
-            foreach(var item in readerBooksLogic.GetAll().ToList())
-            {
-                if(item.IDReader == id)
-                {
-                    result.Add(item);
-                }
-            }
-
-            return result;
-        }
-
-        public static void GetReaderInfo(int id, IReaderLogic readerLogic, IBookInfoLogic bookInfoLogic, IReaderBooksLogic readerBooksLogic)
-        {
-            List<BookInfo> books = new List<BookInfo>();
-            List<ReadersBooks> readersBooks = GetConcreteReaderBooks(id, readerBooksLogic);
-
-            for(int i = 0; i < readersBooks.Count; i++)
-            {
-                foreach(var item in bookInfoLogic.GetAll().ToList())
-                {
-                    if(readersBooks[i].IDBook == item.ID)
-                    {
-                        books.Add(item);
-                    }
-                }
-            }
-
-            foreach(var item in readerLogic.GetAll().ToList())
-            {
-                if(item.ID == id)
-                {
-                    Console.WriteLine($"{item.Name} {item.Age}");
-                }
-            }
-
-            foreach(var item in books)
-            {
-                Console.WriteLine($"{item.ID}. {item.Title} | {item.Author} | {item.Genre} | {item.BookLanguage} | {item.PublishingHouse}");
-            }
-        }
-
-        public static void GetBooksList(IBookInfoLogic bookInfoLogic)
-        {
-            foreach(var item in bookInfoLogic.GetAll().ToList())
-            {
-                Console.WriteLine($"{item.ID}. {item.Title} | {item.Author} | {item.Genre} | {item.BookLanguage} | {item.PublishingHouse}");
-            }
-        }
-
-        public static void AddBook(Book book, IBookLogic bookLogic)
-        {            
-            bookLogic.Add(book);
-        }
-
-        public static void DeleteBook(int id, IBookLogic bookLogic)
-        {
-            bookLogic.DeleteById(id);
-        }
-
-        public static void BookSearch(string name, IBookLogic bookLogic)
-        {
-            foreach(var item in bookLogic.GetAll().ToList())
-            {
-                if(name == item.Title)
-                {
-                    Console.WriteLine($"{item.ID}. {item.Title} {item.IDAuthor} {item.IDGenre} {item.IDLanguage} {item.IDPublishingHouse}");
-                }
-            }
-        }
-
-        public static int SignIn(string readerName, string login, string password, IReaderLogic readerLogic)
-        {
-            foreach(var item in readerLogic.GetAll().ToList())
-            {
-                if(item.Name == readerName && item.Login == login && item.Password == password)
-                {
-                    return item.ID;
-                }
-            }
-
-            return -1;
-        }
-
-        public static void AddBookToReaderList(int bookID, int readerID, IReaderBooksLogic readerBooksLogic)
-        {
-            readerBooksLogic.Add(new ReadersBooks(readerID, bookID));
-        }
-
-        public static void DeleteBookFromReaderList(int bookID, int readerID, IReaderBooksLogic readerBooksLogic)
-        {
-            int id = -1;
-
-            foreach(var item in readerBooksLogic.GetAll().ToList())
-            {
-                if(item.IDBook == bookID && item.IDReader == readerID)
-                {
-                    id = item.ID;
-                }
-            }
-
-            if (id != -1)
-            {
-                readerBooksLogic.DeleteById(id);
-            }
-        }
-
+    {        
         public static void Main(string[] args)
         {
             IBookLogic bookLogic = DependencyResolver.BookLogic;
@@ -146,7 +36,7 @@ namespace ConsolePL
                 {
                     case "1":
                         Console.WriteLine("Получить список книг");
-                        GetBooksList(bookInfoLogic);
+                        MainCommands.GetBooksList(bookInfoLogic);
                         break;
 
                     case "2":
@@ -160,7 +50,7 @@ namespace ConsolePL
                             Console.Write("Введите id читателя: ");
                         }
 
-                        GetReaderInfo(id, readerLogic, bookInfoLogic, readerBooksLogic);
+                        MainCommands.GetReaderInfo(id, readerLogic, bookInfoLogic, readerBooksLogic);
                         break;
 
                     case "3":
@@ -172,11 +62,11 @@ namespace ConsolePL
                         Console.Write("Введите пароль: ");
                         string password = Console.ReadLine();
 
-                        int idReader = SignIn(readerName, login, password, readerLogic);
+                        int idReader = MainCommands.SignIn(readerName, login, password, readerLogic);
 
                         if (idReader != -1)
                         {
-                            GetReaderInfo(idReader, readerLogic, bookInfoLogic, readerBooksLogic);
+                            MainCommands.GetReaderInfo(idReader, readerLogic, bookInfoLogic, readerBooksLogic);
                             bool readerInputComplete = false;
 
                             while (!readerInputComplete)
@@ -197,7 +87,7 @@ namespace ConsolePL
                                             Console.Write("Введите id книги: ");
                                         }
 
-                                        AddBookToReaderList(idBook, idReader, readerBooksLogic);
+                                        MainCommands.AddBookToReaderList(idBook, idReader, readerBooksLogic, bookLogic, readerLogic);
                                         break;
 
                                     case "2":
@@ -209,7 +99,7 @@ namespace ConsolePL
                                             Console.Write("Введите id книги: ");
                                         }
 
-                                        DeleteBookFromReaderList(idBook, idReader, readerBooksLogic);
+                                        MainCommands.DeleteBookFromReaderList(idBook, idReader, readerBooksLogic);
                                         break;
 
                                     case "3":
@@ -243,6 +133,12 @@ namespace ConsolePL
 
                         Console.Write("Введите логин: ");
                         string log = Console.ReadLine();
+                        while(MainCommands.IsExistingLogin(log, readerLogic))
+                        {
+                            Console.Write("Данный логин уже существует. Введите другой: ");
+                            log = Console.ReadLine();
+                        }
+
                         Console.Write("Введите пароль: ");
                         string pass = Console.ReadLine();
 
@@ -252,7 +148,7 @@ namespace ConsolePL
                     case "5":
                         Console.WriteLine("Поиск по названию книги");
                         Console.Write("Введите название: ");
-                        BookSearch(Console.ReadLine(), bookLogic);
+                        MainCommands.BookSearch(Console.ReadLine(), bookLogic);
                         break;
 
                     case "6":

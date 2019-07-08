@@ -11,11 +11,11 @@ namespace Library.DAL
 {
     public static class BaseDao
     {
-        public static string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=library;Integrated Security=True";
+        private static string _connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=library;Integrated Security=True";
 
         public static void Add<T>(string storedProcedureName, T obj)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
@@ -39,7 +39,7 @@ namespace Library.DAL
 
         public static void DeleteById(string storedProcedureName, int id)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
@@ -58,7 +58,7 @@ namespace Library.DAL
         {
             List<T> temp = new List<T>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
