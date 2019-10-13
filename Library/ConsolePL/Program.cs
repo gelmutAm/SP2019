@@ -133,7 +133,7 @@ namespace ConsolePL
 
                         Console.Write("Введите логин: ");
                         string log = Console.ReadLine();
-                        while(MainCommands.IsExistingLogin(log, readerLogic))
+                        while (MainCommands.IsExistingLogin(log, readerLogic))
                         {
                             Console.Write("Данный логин уже существует. Введите другой: ");
                             log = Console.ReadLine();

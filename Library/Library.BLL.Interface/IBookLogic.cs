@@ -11,6 +11,8 @@ namespace Library.BLL.Interface
     {
         void Add(Book book);
 
+        void Update(Book book);
+
         void DeleteById(int id);
 
         IEnumerable<Book> GetAll();

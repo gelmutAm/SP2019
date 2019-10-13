@@ -24,6 +24,11 @@ namespace Library.BLL
             this._bookDao.Add(book);
         }
 
+        public void Update(Book book)
+        {
+            this._bookDao.Update(book);
+        }
+
         public void DeleteById(int id)
         {
             this._bookDao.DeleteById(id);

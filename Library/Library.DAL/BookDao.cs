@@ -15,6 +15,11 @@ namespace Library.DAL
             BaseDao.Add("AddBook", book);
         }
 
+        public void Update(Book book)
+        {
+            BaseDao.Update("UpdateBook", book);
+        }
+
         public void DeleteById(int id)
         {
             BaseDao.DeleteById("DeleteBook", id);

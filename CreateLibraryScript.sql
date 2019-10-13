@@ -247,3 +247,22 @@ create procedure DeleteReadersBooks @ID int
 as
 	delete from ReadersBooks where id_readers_books = @ID
 
+use library
+
+go 
+create procedure UpdateBook @ID int,
+						    @Title nvarchar(100),
+						    @IDAuthor int,
+						    @IDGenre int,
+						    @IDLanguage int,
+						    @IDPublishingHouse int
+as
+	update Book
+	set title = @Title, 
+	    id_author = @IDAuthor,
+		id_genre = @IDGenre,
+		id_language = @IDLanguage,
+		id_publishing_house = @IDPublishingHouse
+	where id_book = @ID
+						   
+

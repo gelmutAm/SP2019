@@ -37,6 +37,28 @@ namespace Library.DAL
             }
         }
 
+        public static void Update<T>(string storedProcedureName, T obj)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(storedProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlCommandBuilder.DeriveParameters(command);
+
+                PropertyInfo[] props = obj.GetType().GetProperties();
+
+                for (int i = 0; i < command.Parameters.Count - 1; i++)
+                {
+                    command.Parameters[command.Parameters[i + 1].ParameterName].Value = props[i].GetValue(obj);
+                }                
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         public static void DeleteById(string storedProcedureName, int id)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
